@@ -1,55 +1,64 @@
 <template>
   <div>
-    <div class="relative overflow-hidden mb-8 grid grid-cols-3">
-      <div class="p-5">
-        <div class="rounded-t-xl overflow-hidden bg-gradient-to-r from-emerald-50 to-teal-100 p-10">
+      <div class="rounded-t-xl overflow-hidden bg-gradient-to-r from-emerald-50 to-teal-100 p-10 grid grid-cols-3">
           <table class="table-auto font-sans">
             <thead>
             <tr>
               <th class="border border-emerald-500 px-4 py-2 text-emerald-600 font-medium">Codigo</th>
               <th class="border border-emerald-500 px-4 py-2 text-emerald-600 font-medium">Producto</th>
+              <th class="border border-emerald-500 px-4 py-2 text-emerald-600 font-medium">
+                <button type="button" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center" @click="view('create_product')">
+                  <font-awesome-icon icon="plus"/>
+                </button>
+              </th>
             </tr>
             </thead>
             <tbody>
             <tr v-for="product in products" v-bind:key="product.id">
               <td class="border border-emerald-500 px-4 py-2 text-emerald-600 font-medium">{{ product.id }}</td>
               <td class="border border-emerald-500 px-4 py-2 text-emerald-600 font-medium">{{ product.name }}</td>
+              <td class="border border-emerald-500 px-4 py-2 text-emerald-600 font-medium">
+                <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center" @click="view('update_product',product)">
+                  <span> Actualizar </span>
+                </button>
+              </td>
+              <td class="border border-emerald-500 px-4 py-2 text-emerald-600 font-medium">
+                <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center" @click="delete_product(product.id)">
+                  <font-awesome-icon icon="trash-alt"/>
+                </button>
+              </td>
             </tr>
             </tbody>
           </table>
-        </div>
-      </div>
 
-      <template>
-        <div class="intro-y flex-1 box py-16 mb-5 lg:mb-0 ">
-          <div class="text-xl font-medium text-center mt-10">
-              Productos
-          </div>
-          <button type="button" class="btn btn-rounded-primary py-3 px-4 block mx-auto mt-8" @click="view('create_product')">
-            Crear
-          </button>
-          <button type="button" class="btn btn-rounded-primary py-3 px-4 block mx-auto mt-8" @click="view('update_product')">
-            Actualizar
-          </button>
-        </div>
-      </template>
 
-      <template v-if="app_name ==='update_product'">
-        <form class="flex w-full max-w-sm mx-auto space-x-3">
-          <div class="w-full max-w-lg my-5 mx-auto grid-cols-2">
-            <div class="flex items-center border-b border-teal-500 py-2">
-              <span class="text-gray-700 appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none">Seleccionar  producto</span>
-              <select class="form-select appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none " v-model="form.name">
-                <option
-                    v-for="prod in products"
-                    v-bind:key="prod.id"
-                    :value="prod.name">{{prod.name}}
-                </option>
-              </select>
+        <template v-if="app_name ==='update_product'">
+          <div class="ml-5 w-full max-w-lg my-5 mx-auto grid-cols-1">
+            <div class="mt-2">
+              <table class="table-auto font-sans" >
+                <thead>
+                <tr>
+                  <th  class="border border-emerald-500 px-4 py-2 text-emerald-600 font-medium">ID</th>
+                  <th  class="border border-emerald-500 px-4 py-2 text-emerald-600 font-medium">
+                    <div class="flex flex-col">
+                      NOMBRE DEL PRODUCTO
+                    </div>
+                  </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td class="border border-emerald-500 px-4 py-2 text-emerald-600 font-medium">{{ product.id}}</td>
+                  <td class="border border-emerald-500 px-4 py-2 text-emerald-600 font-medium">
+                    <input  class="form-control"  v-model="product.name">
+                  </td>
+                </tr>
+                </tbody>
+              </table>
             </div>
 
             <div class="mt-5">
-              <button class="min-w-full bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"  @click.prevent="updated_product(form)">
+              <button class="min-w-full bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"  @click.prevent="updated_product(product)">
                 Guardar
               </button>
             </div>
@@ -61,12 +70,10 @@
               </button>
             </div>
           </div>
-        </form>
-      </template>
+        </template>
 
-      <template v-if="app_name ==='create_product'">
-        <form class="flex w-full max-w-sm mx-auto space-x-3">
-          <div class="w-full max-w-lg my-5 mx-auto grid-cols-2">
+        <template v-if="app_name ==='create_product'">
+          <div class="ml-5 w-full max-w-lg my-5 mx-auto grid-cols-1">
             <div class="flex items-center border-b border-teal-500 py-2">
               <input class="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" type="text" placeholder="Nombre Producto"  v-model="form.name">
             </div>
@@ -76,17 +83,15 @@
                 Guardar
               </button>
             </div>
-
-
             <div class="mt-2">
               <button class="min-w-full bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 border-b-4 border-red-700 hover:border-red-500 rounded" @click="app_name = null">
                 Cancelar
               </button>
             </div>
           </div>
-        </form>
-      </template>
-    </div>
+        </template>
+
+      </div>
   </div>
 </template>
 <script>
@@ -102,6 +107,7 @@ export default {
     return{
       products: [],
       app_name: null,
+      product: null,
       form: {
         name: null
       },
@@ -109,8 +115,9 @@ export default {
   },
 
   methods:{
-    view(app_name){
+    view(app_name, product){
       this.app_name = app_name
+          this.product = product
     },
 
     productData(){
@@ -124,6 +131,12 @@ export default {
 
     resetForm(){
       this.form = {
+        name: null
+      }
+    },
+
+    resetForm2(){
+      this.product = {
         name: null
       }
     },
@@ -155,12 +168,46 @@ export default {
           confirmButtonText: 'Aceptar'
         });
         console.log(resp.data);
-        this.resetForm();
+        this.resetForm2();
         this.productData();
       }).catch( err => {
-        alert(err.data)
+        this.$swal({
+          position: 'bottom-start',
+          icon: 'error',
+          title: 'Oops.. Verifica que toda la información sea correcta',
+          timerProgressBar: true,
+          showConfirmButton: false,
+          timer: 6000,
+          toast: true
+        });
+        console.log(err.data)
       })
-    }
+    },
+
+    delete_product(id){
+      axios.delete(`http://localhost/crud_proyect/public/api/products/${id}`).then(resp => {
+        this.$swal({
+          title: '¡Exito!',
+          text: "El registro se ha eliminado con exito!",
+          icon: 'success',
+          confirmButtonText: 'Aceptar'
+        });
+        console.log(resp.data);
+        this.productData();
+      }).catch( err => {
+        this.$swal({
+          position: 'bottom-start',
+          icon: 'error',
+          title: 'Oops.. Hubo un error',
+          timerProgressBar: true,
+          showConfirmButton: false,
+          timer: 6000,
+          toast: true
+        });
+        console.log(err.data)
+      })
+
+      }
   },
 
   mounted() {

@@ -11,11 +11,7 @@
       </div>
       <div class="items-center md:flex">
         <div class="flex flex-col md:flex-row md:mx-6">
-          <router-link to="/" class="my-1 text-gray-700 dark:text-gray-200 hover:text-indigo-500 dark:hover:text-indigo-400 md:mx-4 md:my-0">
-            Inicio
-          </router-link>
-
-          <router-link to="/products" class="my-1 text-gray-700 dark:text-gray-200 hover:text-indigo-500 dark:hover:text-indigo-400 md:mx-4 md:my-0">
+          <router-link to="/products" class="border border-emerald-500 px-4 py-2 text-emerald-600 font-medium">
             Ingresar Productos
           </router-link>
         </div>
